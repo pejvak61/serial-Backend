@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, escape, url_for
+from flask import request
 import json
 import db
 
@@ -57,8 +58,25 @@ def show_post(post_id):
 def connect():
   return db.db_connectivity()
 
-@app.route('/login')
+@app.route('/auth')
 def login(username = "ali", password = "123"):
   if username == "ali" and password == "123":
     return True
   return False
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        return do_the_login()
+    else:
+        return show_the_login_form()
+
+def do_the_login():
+    return ("logged in")
+
+def show_the_login_form():
+    return ("Showing login form")
+
+# @app.route('/test', methods=['POST'])
+# def test():
+#     return ("This is a test")
