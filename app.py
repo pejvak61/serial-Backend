@@ -57,6 +57,7 @@ def show_post(post_id):
 def connect():
   return db.db_connectivity()
 
+@app.route('/login')
 def login(username = "ali", password = "123"):
   if username == "ali" and password == "123":
     return True
