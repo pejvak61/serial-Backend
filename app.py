@@ -1,5 +1,6 @@
 from flask import Flask, escape, url_for
 from flask import request
+from flask import render_template
 import json
 import db
 
@@ -36,10 +37,23 @@ def authentication(username = "ali", password = "123"):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        return do_the_login()
-    else:
-        return show_the_login_form()
+  error = None
+  if request.method == 'POST':
+      if valid_login(request.form['username'],
+                      request.form['password']):
+          return log_the_user_in(request.form['username'])
+      else:
+          error = 'Invalid username/password'
+  return render_template('/html/login_error.html', error=error)
+
+def valid_login(username, password):
+  if username == "ali" and password == "123":
+    return True
+  return False
+
+def log_the_user_in(username):
+  return("login succeed")
+    
 
 def do_the_login():
     return ("logged in")
