@@ -35,3 +35,6 @@ def db_connectivity():
         except:
             print("Sth went wrong!")
             return("Sth went wrong!")
+
+def createNewUser(username,password):
+    return True

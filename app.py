@@ -45,6 +45,11 @@ def not_found(error):
     resp.headers['X-Something'] = 'A value'
     return resp    
 
+@app.route('/createUser', methods=['post'])
+def createUser(request.form['username'],request.form['password']):
+    
+    
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
