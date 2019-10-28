@@ -44,7 +44,7 @@ def login():
           return log_the_user_in(request.form['username'])
       else:
           error = 'Invalid username/password'
-  return render_template('/html/login_error.html', error=error)
+  return render_template('/login/login_error.html', error=error)
 
 def valid_login(username, password):
   if username == "ali" and password == "123":
