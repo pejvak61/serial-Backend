@@ -16,12 +16,12 @@ def db_connectivity():
         connection = mysql.connector.connect(**connection_config_dict)
         if connection.is_connected():
             db_Info = connection.get_server_info()
-            print("Connected to MySQL Server version ", db_Info)
+            # print("Connected to MySQL Server version ", db_Info)
             cursor = connection.cursor()
             cursor.execute("select database();")
             record = cursor.fetchone()
-            print("Your connected to database: ", record)
-            return("Your connected to database: ", record)
+            # print("You connected to database: ", record)
+            return("You connected to database: ", record)
     except Error as e:
         print("Error while connecting to MySQL", e)
         return("Error while connecting to MySQL", e)
@@ -30,7 +30,7 @@ def db_connectivity():
             if (connection.is_connected()):
                 cursor.close()
                 connection.close()
-                print("MySQL connection is closed")
+                # print("MySQL connection is closed")
                 return("MySQL connection is closed")
         except:
             print("Sth went wrong!")

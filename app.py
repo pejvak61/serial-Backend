@@ -3,7 +3,6 @@ from flask import request
 from flask import render_template,make_response
 from http import HTTPStatus
 from flask import Response
-
 import json
 import db
 
