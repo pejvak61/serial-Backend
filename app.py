@@ -1,12 +1,58 @@
-from flask import Flask, escape, url_for
+from flask import Flask, escape, url_for,jsonify
 from flask import request
 from flask import render_template,make_response
 from http import HTTPStatus
 from flask import Response
 import json
 import db
+import jwt
+import datetime
+from functools import wraps
 
+# ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = 'thisisthesecretkey'
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.args.get('token') # http://127.0.0.1:2281/route?token=jdjklgadjkgakdfwjfwjljaslkfj2e
+        if not token:
+            return jsonify({'message' : 'Token is missing!'}), 403
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'])
+        except:
+            return jsonify({'message' : 'Token is invalid!'}), 403
+        return f(*args, **kwargs)
+    return decorated
+
+@app.route('/unprotected')
+def unprotected():
+    return jsonify({'message' : 'Anyone can view this!'})
+
+@app.route('/protected')
+@token_required
+def protected():
+    return jsonify({'message' : 'This is only available for people with valid tokens.'})
+
+@app.route('/login', methods=['GET'])
+def login():
+    # auth = request.authorization
+    if request.form:
+        uid = request.form['username']
+        pwd = request.form['password']
+        # print(request.form['username'])
+        # print(request.form['password'])
+        if uid == 'ali' and pwd == 'password':
+            token = jwt.encode({'user' : uid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
+            return jsonify({'token' : token.decode('UTF-8')})
+    else:
+        return make_response('Could not verify!', 401, {'WWW-Authentication' : 'Basic realm="Login Required"'})
+
+
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\////////////////////////
+
 
 @app.route('/')
 def index():
@@ -45,13 +91,13 @@ def not_found(error):
     resp.headers['X-Something'] = 'A value'
     return resp    
 
-@app.route('/createUser', methods=['post'])
-def createUser(request.form['username'],request.form['password']):
+# @app.route('/createUser', methods=['post'])
+# def createUser(request.form['username'],request.form['password']):
     
     
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
+@app.route('/loginX', methods=['GET', 'POST'])
+def loginX():
     error = None
     if request.method == 'POST':
         if valid_login(request.form['username'],request.form['password']):
@@ -80,3 +126,9 @@ def show_the_login_form():
 @app.route('/test', methods=['POST'])
 def test():
     return ("This is a test")
+
+# ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
+if __name__ == '__main__':
+    # app.run(debug=True)
+    app.run(host='0.0.0.0', port=2281, debug=True)
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\////////////////////////
