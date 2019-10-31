@@ -1,3 +1,7 @@
+# terminal> set FLASK_ENV=development
+# terminal> set FLASK_APP=app.py
+# app.py
+
 from flask import Flask, escape, url_for,jsonify
 from flask import request
 from flask import render_template,make_response
