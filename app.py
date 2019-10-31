@@ -51,9 +51,22 @@ def login():
         if uid == 'ali' and pwd == 'password':
             token = jwt.encode({'user' : uid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
             return jsonify({'token' : token.decode('UTF-8')})
+        else:
+            return jsonify({'message' : 'Invalid username or password!'}), 401
     else:
         return make_response('Could not verify!', 401, {'WWW-Authentication' : 'Basic realm="Login Required"'})
 
+
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\////////////////////////
+
+# ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
+@app.route('/createNewUser')
+def createUser():
+    uid = request.json['uid']
+    pwd = request.json['pwd']
+    print("uid:",uid,"pwd:",pwd)
+    return jsonify({'uid' : uid , 'pwd' : pwd})
+    # return make_response('Received', 200, {'uid' : uid , 'pwd' : pwd})
 
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\////////////////////////
 
