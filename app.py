@@ -1,7 +1,8 @@
 # terminal> set FLASK_ENV=development
 # terminal> set FLASK_APP=app.py
 # app.py
-
+salt='Ali'
+hash='Mohammadi'
 from flask import Flask, escape, url_for,jsonify
 from flask import request
 from flask import render_template,make_response
@@ -13,7 +14,7 @@ import jwt
 import datetime
 from functools import wraps
 import secrets
-
+import myCryptography
 # ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
 app = Flask(__name__)
 
@@ -66,8 +67,14 @@ def createUser():
     uid = request.json['uid']
     pwd = request.json['pwd']
     # print("uid:",uid,"pwd:",pwd)
-    return jsonify({'uid' : uid, 'pwd' : pwd,'token_hex(16)' : secrets.token_hex(16)})
-    # return make_response('Received', 200, {'uid' : uid , 'pwd' : pwd})
+    # return (myCryptography.pbkdf2_hmac_sha512(pwd,salt))
+    # return jsonify({'uid' : uid, 'pwd' : pwd,'token_hex(16)' : secrets.token_hex(16)})
+    return make_response('Received', 200, {'uid' : uid , 'pwd' : pwd})
+
+@app.route('/testHashAndSalt')
+def testHashAndSalt():
+    return (myCryptography.hashandsaltindicator())
+
 
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\////////////////////////
 
