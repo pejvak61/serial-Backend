@@ -12,6 +12,7 @@ import db
 import jwt
 import datetime
 from functools import wraps
+import secrets
 
 # ///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
 app = Flask(__name__)
@@ -64,8 +65,8 @@ def login():
 def createUser():
     uid = request.json['uid']
     pwd = request.json['pwd']
-    print("uid:",uid,"pwd:",pwd)
-    return jsonify({'uid' : uid , 'pwd' : pwd})
+    # print("uid:",uid,"pwd:",pwd)
+    return jsonify({'uid' : uid, 'pwd' : pwd,'token_hex(16)' : secrets.token_hex(16)})
     # return make_response('Received', 200, {'uid' : uid , 'pwd' : pwd})
 
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\////////////////////////
