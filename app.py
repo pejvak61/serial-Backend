@@ -3,6 +3,7 @@
 # app.py
 salt='Ali'
 hash='Mohammadi'
+token=''
 from flask import Flask, escape, url_for,jsonify
 from flask import request
 from flask import render_template,make_response
@@ -74,8 +75,6 @@ def createUser():
 @app.route('/testHashAndSalt')
 def testHashAndSalt():
     return (myCryptography.hashandsaltindicator())
-
-
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\////////////////////////
 
 
