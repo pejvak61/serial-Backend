@@ -24,11 +24,12 @@ app.config['SECRET_KEY'] = 'thisisthesecretkey'
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = request.args.get('token') # http://127.0.0.1:2281/route?token=jdjklgadjkgakdfwjfwjljaslkfj2e
+        token = request.args.get('token') # http://127.0.0.1:2281/protected?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWxpIiwiZXhwIjoxNTcyNzE2MzM2fQ.n0VyL_MBz9o-DkIHG8gzxxIMa6tgswV6BEdWfSqXhJk
         if not token:
             return jsonify({'message' : 'Token is missing!'}), 403
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'])
+            print ('<<<<', data, '>>>>')
         except:
             return jsonify({'message' : 'Token is invalid!'}), 403
         return f(*args, **kwargs)
@@ -69,7 +70,9 @@ def createUser():
     # print("uid:",uid,"pwd:",pwd)
     # return (myCryptography.pbkdf2_hmac_sha512(pwd,salt))
     # return jsonify({'uid' : uid, 'pwd' : pwd,'token_hex(16)' : secrets.token_hex(16)})
-    return make_response('Received', 200, {'uid' : uid , 'pwd' : pwd})
+    token = myCryptography.generateJWT(uid,app.config['SECRET_KEY'])
+    return jsonify({'token' : token}),200
+    # return make_response('Received', 200, {'uid' : uid , 'pwd' : pwd})
 
 @app.route('/testHashAndSalt')
 def testHashAndSalt():
