@@ -45,16 +45,14 @@ def protected():
 
 @app.route('/login', methods=['GET'])
 def login():
-    # auth = request.authorization
     if request.form:
         uid = request.form['username']
         pwd = request.form['password']
-        # print(request.form['username'])
-        # print(request.form['password'])
         if uid == 'ali' and pwd == 'password':
             # token = jwt.encode({'user' : uid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
             # return jsonify({'token' : token.decode('UTF-8')})
-            return jsonify({'token' : myCryptography.generateJWT(uid,app.config['SECRET_KEY']).decode('UTF-8')})
+            token = myCryptography.generateJWT(uid,app.config['SECRET_KEY'])
+            return jsonify({'token' : token})
         else:
             return jsonify({'message' : 'Invalid username or password!'}), 401
     else:
