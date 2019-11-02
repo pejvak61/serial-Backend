@@ -3,7 +3,7 @@
 # app.py
 salt='Ali'
 hash='Mohammadi'
-token=''
+token='98a544ce8d'
 from flask import Flask, escape, url_for,jsonify
 from flask import request
 from flask import render_template,make_response
@@ -52,8 +52,9 @@ def login():
         # print(request.form['username'])
         # print(request.form['password'])
         if uid == 'ali' and pwd == 'password':
-            token = jwt.encode({'user' : uid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
-            return jsonify({'token' : token.decode('UTF-8')})
+            # token = jwt.encode({'user' : uid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
+            # return jsonify({'token' : token.decode('UTF-8')})
+            return jsonify({'token' : myCryptography.generateJWT(uid,app.config['SECRET_KEY']).decode('UTF-8')})
         else:
             return jsonify({'message' : 'Invalid username or password!'}), 401
     else:

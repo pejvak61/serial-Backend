@@ -12,6 +12,7 @@ def pbkdf2_hmac_sha512(password,salt,iters=2048): # Create hash
 
 def generateJWT(uid,secret):
     token = jwt.encode({'user' : uid, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},secret)
+    return token
 
 def setPassword(pwd):
     salt = secrets.token_hex(16)
